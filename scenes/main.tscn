@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://c1ceofvrmgarr"]
+
+[ext_resource type="Texture2D" uid="uid://640oju3ndwbt" path="res://assets/textures/dev/grids/Dark/texture_07.png" id="1_fveun"]
+[ext_resource type="Texture2D" uid="uid://b0y3ebfl2pouj" path="res://assets/hdris/kloofendal_48d_partly_cloudy_puresky_2k.hdr" id="2_ajvbe"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="3_53hnl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s1b3j"]
+albedo_texture = ExtResource("1_fveun")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wc6n0"]
+panorama = ExtResource("2_ajvbe")
+
+[sub_resource type="Sky" id="Sky_4an2o"]
+sky_material = SubResource("PanoramaSkyMaterial_wc6n0")
+
+[sub_resource type="Environment" id="Environment_4w63k"]
+background_mode = 2
+sky = SubResource("Sky_4an2o")
+tonemap_mode = 2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kryef"]
+
+[node name="world" type="Node3D"]
+
+[node name="stage" type="Node3D" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(20, 1, 20)
+material = SubResource("StandardMaterial3D_s1b3j")
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_4w63k")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.0958457, 0.90505, -0.414364, 0, 0.416281, 0.909236, 0.995396, 0.0871463, -0.0398987, 0, 0, 0)
+shadow_enabled = true
+
+[node name="player" type="CharacterBody3D" parent="."]
+script = ExtResource("3_53hnl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_kryef")
+
+[node name="head" type="Node3D" parent="player"]
+
+[node name="Camera3D" type="Camera3D" parent="player/head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
