@@ -29,6 +29,8 @@ func _input(event):
 		rotate_y(-deg_to_rad(event.relative.x * mouse_sens))
 		head.rotate_x(deg_to_rad(-event.relative.y * mouse_sens))
 		head.rotation.x = clamp(head.rotation.x,deg_to_rad(-50),deg_to_rad(60))
+	if Input.is_action_pressed("quit"):
+		get_tree().quit()
 		
 		
 func _physics_process(delta: float) -> void:
